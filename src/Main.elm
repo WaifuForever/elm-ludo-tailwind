@@ -43,19 +43,97 @@ init _ =
     )
 
 
+lineHtml : String -> String -> Int -> Html Msg
+lineHtml colour direction id =
+    case id of
+        0 ->
+            div [ class ("flex border flex-" ++ direction) ]
+                [ cell Nothing "white" Nothing
+                , cell Nothing colour (Just "-700")
+                , cell Nothing "white" Nothing
+                , cell Nothing "white" Nothing
+                , cell Nothing "white" Nothing
+                , cell Nothing "white" Nothing
+                ]
+
+        1 ->
+            div [ class ("flex border flex-" ++ direction) ]
+                [ cell Nothing "white" Nothing
+                , cell Nothing colour (Just "-700")
+                , cell Nothing colour (Just "-700")
+                , cell Nothing colour (Just "-700")
+                , cell Nothing colour (Just "-700")
+                , cell Nothing colour (Just "-700")
+                ]
+
+        2 ->
+            div [ class ("flex border flex-" ++ direction) ]
+                [ cell Nothing "white" Nothing
+                , cell Nothing "white" Nothing
+                , cell Nothing "white" Nothing
+                , cell Nothing "white" Nothing
+                , cell Nothing colour (Just "-700")
+                , cell Nothing "white" Nothing
+                ]
+
+        3 ->
+            div [ class ("flex border flex-" ++ direction) ]
+                [ cell Nothing colour (Just "-700")
+                , cell Nothing colour (Just "-700")
+                , cell Nothing colour (Just "-700")
+                , cell Nothing colour (Just "-700")
+                , cell Nothing colour (Just "-700")
+                , cell Nothing "white" Nothing
+                ]
+
+        _ ->
+            div [ class ("flex border flex-" ++ direction) ]
+                [ cell Nothing "white" Nothing
+                , cell Nothing "white" Nothing
+                , cell Nothing "white" Nothing
+                , cell Nothing "white" Nothing
+                , cell Nothing "white" Nothing
+                , cell Nothing "white" Nothing
+                ]
+
+
 gridHtml : Model -> Html Msg
 gridHtml model =
-    div
-        [ class "p-5"
-        ]
-        [ homeBox [ True, True, True, True ] Red
-        , div [ class "flex border" ]
-            [ cell Nothing "gray"
-            , cell Nothing "gray"
-            , cell Nothing "gray"
-            , cell Nothing "gray"
-            , cell Nothing "gray"
-            , cell Nothing "gray"
+    div [ class "flex flex-colum p-5" ]
+        [ div
+            []
+            [ homeBox [ True, True, True, True ] Blue
+            , div [ class "col" ]
+                [ lineHtml "blue" "row" 0
+                , lineHtml "blue" "row" 1
+                , lineHtml "blue" "row" 4
+                ]
+            , homeBox [ True, True, True, True ] Red
+            ]
+        , div
+            [ class "col" ]
+            [ div [ class "flex" ]
+                [ lineHtml "yellow" "col" 4
+                , lineHtml "yellow" "col" 1
+                , lineHtml "yellow" "col" 0
+                ]
+            , div [ class "w-48 h-48" ] []
+            , div [ class "flex" ]
+                [ lineHtml "red" "col" 2
+                , lineHtml "red" "col" 3
+                , lineHtml "red" "col" 4
+                ]
+            ]
+        , div
+            []
+            [ homeBox [ True, True, True, True ]
+                Yellow
+            , div []
+                [ lineHtml "green" "row" 4
+                , lineHtml "green" "row" 3
+                , lineHtml "green" "row" 2
+                ]
+            , homeBox [ True, True, True, True ] Green
             ]
         ]
 

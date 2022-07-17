@@ -1,4 +1,4 @@
-module Cell exposing (cell, safeCell, homeCell)
+module Cell exposing (cell, homeCell, safeCell)
 
 import Html exposing (Html, div)
 import Html.Attributes exposing (class)
@@ -20,9 +20,21 @@ pieceSvg ( colour, scale ) =
         []
 
 
-cell : Maybe Int -> String -> Html msg
-cell piece colour =
-    div [ class ("w-16 h-16 border border-black bg-" ++ colour ++ "-100") ]
+cell : Maybe Int -> String -> Maybe String -> Html msg
+cell piece colour opacity =
+    div
+        [ class
+            ("w-16 h-16 border border-black bg-"
+                ++ colour
+                ++ (case opacity of
+                        Nothing ->
+                            ""
+
+                        Just op ->
+                            op
+                   )
+            )
+        ]
         [ case piece of
             Nothing ->
                 div [] []
@@ -36,10 +48,10 @@ safeCell : List Int -> String -> Html msg
 safeCell pieces colour =
     case pieces of
         [] ->
-            cell Nothing colour
+            cell Nothing colour Nothing
 
         [ scale ] ->
-            cell (Just scale) colour
+            cell (Just scale) colour Nothing
 
         ps ->
             div [] []
