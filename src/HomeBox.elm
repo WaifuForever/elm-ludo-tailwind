@@ -1,15 +1,16 @@
 module HomeBox exposing (homeBox)
 
+import Cell exposing (homeCell)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import LudoModel exposing (PlayerColor(..))
+import LudoModel exposing (PlayerColour(..))
 
 
-homeBox : String -> PlayerColor -> Html msg
-homeBox className color =
+homeBox : List Bool -> PlayerColour -> Html msg
+homeBox pieces colour =
     let
         computedClassName =
-            (case color of
+            case colour of
                 Red ->
                     "-red-700"
 
@@ -21,14 +22,8 @@ homeBox className color =
 
                 Yellow ->
                     "-yellow-700"
-            )
-                ++ className
     in
-    div [ class ("flex w-96 h-96 m-3 justify-center items-center bg" ++ computedClassName) ]
+    div [ class ("flex w-96 h-96 justify-center items-center bg" ++ computedClassName) ]
         [ div [ class "flex w-60 h-60 flex-wrap justify-center items-center rounded-xl p-8 bg-white" ]
-            [ div [ class ("w-16 h-16 m-2 rounded-full bg-gray-300 border" ++ computedClassName) ] []
-            , div [ class ("w-16 h-16 m-2 rounded-full bg-gray-300 border" ++ computedClassName) ] []
-            , div [ class ("w-16 h-16 m-2 rounded-full bg-gray-300 border" ++ computedClassName) ] []
-            , div [ class ("w-16 h-16 m-2 rounded-full bg-gray-300 border" ++ computedClassName) ] []
-            ]
+            (List.map (\x -> homeCell x computedClassName) pieces)
         ]

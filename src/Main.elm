@@ -1,10 +1,11 @@
 module Main exposing (main)
 
 import Browser
+import Cell exposing (cell)
 import HomeBox exposing (homeBox)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import LudoModel exposing (Model, Msg(..), PlayerColor(..), Position(..))
+import LudoModel exposing (Model, Msg(..), PlayerColour(..), Position(..))
 import Random
 
 
@@ -45,9 +46,18 @@ init _ =
 gridHtml : Model -> Html Msg
 gridHtml model =
     div
-        [ class ""
+        [ class "p-5"
         ]
-        [ homeBox "" Red ]
+        [ homeBox [ True, True, True, True ] Red
+        , div [ class "flex border" ]
+            [ cell Nothing "gray"
+            , cell Nothing "gray"
+            , cell Nothing "gray"
+            , cell Nothing "gray"
+            , cell Nothing "gray"
+            , cell Nothing "gray"
+            ]
+        ]
 
 
 gameStartView model =
@@ -69,7 +79,7 @@ view model =
                     ]
 
             Nothing ->
-                 div []
+                div []
                     [ div [ class "my-8  text-center text-white" ]
                         [ gridHtml model
                         , Html.text ("Room:  " ++ Maybe.withDefault "" model.room)

@@ -1,27 +1,30 @@
-module LudoModel exposing (PlayerColor(..), Model, Position(..), Msg(..))
+module LudoModel exposing (Model, Msg(..), PlayerColour(..), Position(..))
+
 
 type alias Model =
     { diceNum : Int
-    , positions : List ( PlayerColor, Int )
-    , turn : PlayerColor
+    , positions : List ( PlayerColour, Int )
+    , turn : PlayerColour
     , maxPlayers : Maybe Int
     , room : Maybe String
     , roomToJoin : String
     , messageToDisplay : String
-    , selectedPlayer : PlayerColor
-    , participants : List PlayerColor
+    , selectedPlayer : PlayerColour
+    , participants : List PlayerColour
     }
 
-type PlayerColor
+type PlayerColour
     = Red
     | Green
     | Blue
     | Yellow
 
+
 type Position
     = InCommonPathPosition Int CommonPathPosition
     | InStartBoxPosition Int
-    | InHomePathPosition PlayerColor Int
+    | InHomePathPosition PlayerColour Int
+
 
 type Msg
     = NewRandomNumber Int
@@ -35,8 +38,9 @@ type Msg
     | UpdateMessage String
     | UpdateRoom String Int Int
 
+
 type CommonPathPosition
     = PathStar
-    | PathStart PlayerColor
-    | PathEnd PlayerColor
+    | PathStart PlayerColour
+    | PathEnd PlayerColour
     | None
