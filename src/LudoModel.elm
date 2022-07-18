@@ -3,7 +3,7 @@ module LudoModel exposing (Model, Msg(..), PlayerColour(..), Position(..))
 
 type alias Model =
     { diceNum : Int
-    , positions : List ( PlayerColour, Int )
+    , positions : List ( List PlayerColour, Int )
     , turn : PlayerColour
     , maxPlayers : Maybe Int
     , room : Maybe String
