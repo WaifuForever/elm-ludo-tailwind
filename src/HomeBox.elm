@@ -12,18 +12,18 @@ homeBox pieces colour =
         computedClassName =
             case colour of
                 Red ->
-                    "-red-700"
+                    "Red"
 
                 Green ->
-                    "-green-700"
+                    "Green"
 
                 Blue ->
-                    "-blue-700"
+                    "Blue"
 
                 Yellow ->
-                    "-yellow-700"
+                    "Yellow"
     in
-    div [ class ("flex w-96 h-96 justify-center items-center bg" ++ computedClassName) ]
+    div [ class ("flex w-96 h-96 justify-center items-center bg-" ++ String.toLower computedClassName ++ "-700") ]
         [ div [ class "flex w-60 h-60 flex-wrap justify-center items-center rounded-xl p-8 bg-white" ]
             (List.map (\x -> homeCell x computedClassName) pieces)
         ]

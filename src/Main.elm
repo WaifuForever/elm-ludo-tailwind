@@ -1,7 +1,7 @@
 module Main exposing (main)
 
 import Browser
-import Cell exposing (cell)
+import Cell exposing (cell, safeCell)
 import HomeBox exposing (homeBox)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -49,7 +49,7 @@ lineHtml colour direction id =
         0 ->
             div [ class ("flex border flex-" ++ direction) ]
                 [ cell Nothing "white" Nothing
-                , cell Nothing colour (Just "-700")
+                , safeCell [ "red", "blue" ] colour (Just "-700")
                 , cell Nothing "white" Nothing
                 , cell Nothing "white" Nothing
                 , cell Nothing "white" Nothing
@@ -72,7 +72,7 @@ lineHtml colour direction id =
                 , cell Nothing "white" Nothing
                 , cell Nothing "white" Nothing
                 , cell Nothing "white" Nothing
-                , cell Nothing colour (Just "-700")
+                , safeCell [ "red", "green", "blue" ] colour (Just "-700")
                 , cell Nothing "white" Nothing
                 ]
 
