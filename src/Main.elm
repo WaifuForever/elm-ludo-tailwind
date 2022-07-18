@@ -145,12 +145,12 @@ gameStartView model =
 
 view : Model -> Html Msg
 view model =
-    div []
+    div [class "flex h-screen justify-center items-center py-2"]
         [ div [] [ Html.text model.messageToDisplay ]
         , case model.room of
             Just _ ->
                 div []
-                    [ div [ class "my-8  text-center text-white" ]
+                    [ div [ class "text-center text-white" ]
                         [ gridHtml model
                         , Html.text ("Room:  " ++ Maybe.withDefault "" model.room)
                         ]
@@ -158,7 +158,7 @@ view model =
 
             Nothing ->
                 div []
-                    [ div [ class "my-8  text-center text-white" ]
+                    [ div [ class "text-center text-white" ]
                         [ gridHtml model
                         , Html.text ("Room:  " ++ Maybe.withDefault "" model.room)
                         ]
