@@ -113,7 +113,7 @@ safeCell pieces colour opacity =
                         3 ->
                             [ div [ class "flex" ]
                                 (List.map (\x -> pieceSvg ( x, 0.4 )) (List.take 2 pieces))
-                            , div [ class "flex h-8" ]
+                            , div [ class "flex h-8 -mt-1" ]
                                 (List.map (\x -> pieceSvg ( x, 0.4 )) (List.drop 2 pieces))
                             ]
 

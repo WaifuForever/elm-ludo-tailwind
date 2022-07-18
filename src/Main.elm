@@ -31,7 +31,7 @@ init : () -> ( Model, Cmd Msg )
 init _ =
     ( { diceNum = 0
       , turn = Red
-      , positions = [ ( Red, 2 ) ]
+      , positions = [ ( Red, 2 ), (Blue, 3), (Blue, 5) ]
       , maxPlayers = Just 2
       , room = Nothing
       , roomToJoin = ""
@@ -97,18 +97,23 @@ lineHtml colour direction id =
                 ]
 
 
+sparePieces : List ( PlayerColour, Int ) -> PlayerColour -> List Bool
+sparePieces inGame playerColour =
+    List.map (\( x, _ ) -> not (x == playerColour)) inGame
+
+
 gridHtml : Model -> Html Msg
 gridHtml model =
     div [ class "flex flex-colum p-5" ]
         [ div
             []
-            [ homeBox [ True, True, True, True ] Blue
+            [ homeBox (sparePieces model.positions Blue) Blue
             , div [ class "col" ]
                 [ lineHtml Blue "row" 0
                 , lineHtml Blue "row" 1
                 , lineHtml Blue "row" 4
                 ]
-            , homeBox [ True, True, True, True ] Red
+            , homeBox (sparePieces model.positions Red) Red
             ]
         , div
             [ class "col" ]
@@ -126,14 +131,14 @@ gridHtml model =
             ]
         , div
             []
-            [ homeBox [ True, True, True, True ]
+            [ homeBox (sparePieces model.positions Yellow)
                 Yellow
             , div []
                 [ lineHtml Green "row" 4
                 , lineHtml Green "row" 3
                 , lineHtml Green "row" 2
                 ]
-            , homeBox [ True, True, True, True ] Green
+            , homeBox (sparePieces model.positions Green) Green
             ]
         ]
 
