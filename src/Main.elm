@@ -32,7 +32,7 @@ init : () -> ( Model, Cmd Msg )
 init _ =
     ( { diceNum = 0
       , turn = Red
-      , positions = [ ( [ Red ], 2 ), ( [ Blue ], 3 ), ( [ Blue ], 5 ) ]
+      , positions = [ ( [ Yellow, Red, Blue ], 1 ), ( [ Yellow, Blue, Green ], 60 ), ( [ Blue ], 71 ), ( [ Green ], 61 ), ( [ Red ], 70 ), ( [ Red ], 59 ) ]
       , maxPlayers = Just 2
       , room = Nothing
       , roomToJoin = ""
@@ -153,10 +153,12 @@ lineHtml model colour direction id positions =
                 , sharedCell (checkPlayers model.positions positions colour 5) Nothing Nothing
                 ]
 
+isNot : Bool -> Maybe Bool
+isNot b = if b then (Just (not b)) else Nothing
 
 sparePieces : List ( List PlayerColour, Int ) -> PlayerColour -> List Bool
 sparePieces inGame playerColour =
-    List.map (\( x, _ ) -> not (List.member playerColour x)) inGame
+    List.filterMap isNot (List.map (\( x, _ ) -> (List.member playerColour x)) inGame)
 
 
 gridHtml : Model -> Html Msg
