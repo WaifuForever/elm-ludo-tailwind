@@ -43,57 +43,57 @@ init _ =
     )
 
 
-lineHtml : String -> String -> Int -> Html Msg
+lineHtml : PlayerColour -> String -> Int -> Html Msg
 lineHtml colour direction id =
     case id of
         0 ->
             div [ class ("flex border flex-" ++ direction) ]
-                [ cell Nothing "white" Nothing
-                , safeCell [ "red", "blue" ] colour (Just "-700")
-                , cell Nothing "white" Nothing
-                , cell Nothing "white" Nothing
-                , cell Nothing "white" Nothing
-                , cell Nothing "white" Nothing
+                [ cell Nothing Nothing Nothing
+                , safeCell [ Red, Blue ] colour (Just "-700")
+                , cell Nothing Nothing Nothing
+                , cell Nothing Nothing Nothing
+                , cell Nothing Nothing Nothing
+                , cell Nothing Nothing Nothing
                 ]
 
         1 ->
             div [ class ("flex border flex-" ++ direction) ]
-                [ cell Nothing "white" Nothing
-                , cell Nothing colour (Just "-700")
-                , cell Nothing colour (Just "-700")
-                , cell Nothing colour (Just "-700")
-                , cell Nothing colour (Just "-700")
-                , cell Nothing colour (Just "-700")
+                [ cell Nothing Nothing Nothing
+                , cell Nothing (Just colour) (Just "-700")
+                , cell Nothing (Just colour) (Just "-700")
+                , cell Nothing (Just colour) (Just "-700")
+                , cell Nothing (Just colour) (Just "-700")
+                , cell Nothing (Just colour) (Just "-700")
                 ]
 
         2 ->
             div [ class ("flex border flex-" ++ direction) ]
-                [ cell Nothing "white" Nothing
-                , cell Nothing "white" Nothing
-                , cell Nothing "white" Nothing
-                , cell Nothing "white" Nothing
-                , safeCell [ "red", "green", "blue" ] colour (Just "-700")
-                , cell Nothing "white" Nothing
+                [ cell Nothing Nothing Nothing
+                , cell Nothing Nothing Nothing
+                , cell Nothing Nothing Nothing
+                , cell Nothing Nothing Nothing
+                , safeCell [ Red, Green, Blue ] colour (Just "-700")
+                , cell Nothing Nothing Nothing
                 ]
 
         3 ->
             div [ class ("flex border flex-" ++ direction) ]
-                [ cell Nothing colour (Just "-700")
-                , cell Nothing colour (Just "-700")
-                , cell Nothing colour (Just "-700")
-                , cell Nothing colour (Just "-700")
-                , cell Nothing colour (Just "-700")
-                , cell Nothing "white" Nothing
+                [ cell Nothing (Just colour) (Just "-700")
+                , cell Nothing (Just colour) (Just "-700")
+                , cell Nothing (Just colour) (Just "-700")
+                , cell Nothing (Just colour) (Just "-700")
+                , cell Nothing (Just colour) (Just "-700")
+                , cell Nothing Nothing Nothing
                 ]
 
         _ ->
             div [ class ("flex border flex-" ++ direction) ]
-                [ cell Nothing "white" Nothing
-                , cell Nothing "white" Nothing
-                , cell Nothing "white" Nothing
-                , cell Nothing "white" Nothing
-                , cell Nothing "white" Nothing
-                , cell Nothing "white" Nothing
+                [ cell Nothing Nothing Nothing
+                , cell Nothing Nothing Nothing
+                , cell Nothing Nothing Nothing
+                , cell Nothing Nothing Nothing
+                , cell Nothing Nothing Nothing
+                , cell Nothing Nothing Nothing
                 ]
 
 
@@ -104,24 +104,24 @@ gridHtml model =
             []
             [ homeBox [ True, True, True, True ] Blue
             , div [ class "col" ]
-                [ lineHtml "blue" "row" 0
-                , lineHtml "blue" "row" 1
-                , lineHtml "blue" "row" 4
+                [ lineHtml Blue "row" 0
+                , lineHtml Blue "row" 1
+                , lineHtml Blue "row" 4
                 ]
             , homeBox [ True, True, True, True ] Red
             ]
         , div
             [ class "col" ]
             [ div [ class "flex" ]
-                [ lineHtml "yellow" "col" 4
-                , lineHtml "yellow" "col" 1
-                , lineHtml "yellow" "col" 0
+                [ lineHtml Yellow "col" 4
+                , lineHtml Yellow "col" 1
+                , lineHtml Yellow "col" 0
                 ]
             , div [ class "w-48 h-48" ] []
             , div [ class "flex" ]
-                [ lineHtml "red" "col" 2
-                , lineHtml "red" "col" 3
-                , lineHtml "red" "col" 4
+                [ lineHtml Red "col" 2
+                , lineHtml Red "col" 3
+                , lineHtml Red "col" 4
                 ]
             ]
         , div
@@ -129,9 +129,9 @@ gridHtml model =
             [ homeBox [ True, True, True, True ]
                 Yellow
             , div []
-                [ lineHtml "green" "row" 4
-                , lineHtml "green" "row" 3
-                , lineHtml "green" "row" 2
+                [ lineHtml Green "row" 4
+                , lineHtml Green "row" 3
+                , lineHtml Green "row" 2
                 ]
             , homeBox [ True, True, True, True ] Green
             ]
@@ -145,7 +145,7 @@ gameStartView model =
 
 view : Model -> Html Msg
 view model =
-    div [class "flex h-screen justify-center items-center py-2"]
+    div [ class "flex h-screen justify-center items-center py-2" ]
         [ div [] [ Html.text model.messageToDisplay ]
         , case model.room of
             Just _ ->

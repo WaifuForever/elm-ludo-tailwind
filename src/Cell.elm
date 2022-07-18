@@ -1,4 +1,4 @@
-module Cell exposing (cell, homeCell, safeCell)
+module Cell exposing (cell, homeCell, playerColourToString, safeCell)
 
 import Html exposing (Html, div)
 import Html.Attributes exposing (class)
@@ -7,8 +7,24 @@ import Svg exposing (svg)
 import Svg.Attributes
 
 
-pieceSvg : ( String, Float ) -> Html msg
-pieceSvg ( colour, scale ) =
+playerColourToString : PlayerColour -> String
+playerColourToString playerColour =
+    case playerColour of
+        Red ->
+            "red"
+
+        Green ->
+            "green"
+
+        Yellow ->
+            "yellow"
+
+        Blue ->
+            "blue"
+
+
+pieceSvg : ( PlayerColour, Float ) -> Html msg
+pieceSvg ( playerColour, scale ) =
     svg
         [ Svg.Attributes.viewBox ("-10 -5 " ++ String.fromFloat (20 + scale * 10) ++ " " ++ String.fromFloat (20 + scale * 10))
         , Svg.Attributes.width "100%"
@@ -17,7 +33,7 @@ pieceSvg ( colour, scale ) =
         ]
         [ Svg.polyline
             [ Svg.Attributes.points "-5,15 2,5 9,15 -5,15"
-            , Svg.Attributes.fill colour
+            , Svg.Attributes.fill (playerColourToString playerColour)
             , Svg.Attributes.stroke "black"
             , Svg.Attributes.strokeWidth "1"
             ]
@@ -28,18 +44,24 @@ pieceSvg ( colour, scale ) =
             , Svg.Attributes.r "4"
             , Svg.Attributes.stroke "black"
             , Svg.Attributes.strokeWidth "1"
-            , Svg.Attributes.fill colour
+            , Svg.Attributes.fill (playerColourToString playerColour)
             ]
             []
         ]
 
 
-cell : Maybe Float -> String -> Maybe String -> Html msg
-cell piece colour opacity =
+cell : Maybe PlayerColour -> Maybe PlayerColour -> Maybe String -> Html msg
+cell playerColour background opacity =
     div
         [ class
             ("w-16 h-16 border border-black bg-"
-                ++ colour
+                ++ (case background of
+                        Nothing ->
+                            "white"
+
+                        Just bg ->
+                            playerColourToString bg
+                   )
                 ++ (case opacity of
                         Nothing ->
                             ""
@@ -49,29 +71,29 @@ cell piece colour opacity =
                    )
             )
         ]
-        [ case piece of
+        [ case playerColour of
             Nothing ->
                 div [] []
 
             Just p1 ->
-                pieceSvg ( colour, 1 )
+                pieceSvg ( p1, 1 )
         ]
 
 
-safeCell : List String -> String -> Maybe String -> Html msg
+safeCell : List PlayerColour -> PlayerColour -> Maybe String -> Html msg
 safeCell pieces colour opacity =
     case pieces of
         [] ->
-            cell Nothing colour opacity
+            cell Nothing (Just colour) opacity
 
         [ playerColour ] ->
-            cell (Just 0.5) playerColour opacity
+            cell (Just playerColour) (Just playerColour) opacity
 
         pcs ->
             div
                 [ class
                     ("flex flex-wrap w-16 h-16 border border-black bg-"
-                        ++ colour
+                        ++ playerColourToString colour
                         ++ (case opacity of
                                 Nothing ->
                                     ""
@@ -108,7 +130,7 @@ safeCell pieces colour opacity =
                 ]
 
 
-homeCell : Bool -> String -> Html msg
+homeCell : Bool -> PlayerColour -> Html msg
 homeCell p colour =
     div [ class "flex w-16 h-16 m-2 pl-2 pt-1 rounded-full bg-gray-300" ]
         [ if p then
