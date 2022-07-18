@@ -32,7 +32,7 @@ init : () -> ( Model, Cmd Msg )
 init _ =
     ( { diceNum = 0
       , turn = Red
-      , positions = [ ( [ Yellow, Red, Blue ], 1 ), ( [ Yellow, Blue, Green ], 60 ), ( [ Blue ], 71 ), ( [ Green ], 61 ), ( [ Red ], 70 ), ( [ Red ], 59 ) ]
+      , positions = [ ]
       , maxPlayers = Just 2
       , room = Nothing
       , roomToJoin = ""
@@ -153,51 +153,57 @@ lineHtml model colour direction id positions =
                 , sharedCell (checkPlayers model.positions positions colour 5) Nothing Nothing
                 ]
 
+
 isNot : Bool -> Maybe Bool
-isNot b = if b then (Just (not b)) else Nothing
+isNot b =
+    if b then
+        Just (not b)
+
+    else
+        Nothing
+
 
 sparePieces : List ( List PlayerColour, Int ) -> PlayerColour -> List Bool
 sparePieces inGame playerColour =
-    List.filterMap isNot (List.map (\( x, _ ) -> (List.member playerColour x)) inGame)
+    List.filterMap isNot (List.map (\( x, _ ) -> List.member playerColour x) inGame)
 
 
 gridHtml : Model -> Html Msg
 gridHtml model =
-    div [ class "flex flex-colum p-5" ]
+    div [ class "flex border-2 border-white bg-white rounded-xl" ]
         [ div
             []
-            [ homeBox (sparePieces model.positions Blue) Blue
+            [ homeBox (sparePieces model.positions Blue) Blue "rounded-tl-xl"
             , div [ class "col" ]
-                [ lineHtml model Blue "row" 0 (List.range 0 5)
+                [ lineHtml model Blue "row" 0 (List.reverse (List.range 0 5))
                 , lineHtml model Blue "row" 1 (List.range 6 11)
                 , lineHtml model Blue "row" 4 (List.range 12 17)
                 ]
-            , homeBox (sparePieces model.positions Red) Red
+            , homeBox (sparePieces model.positions Red) Red "rounded-bl-xl"
             ]
         , div
             [ class "col" ]
             [ div [ class "flex" ]
-                [ lineHtml model Yellow "col" 4 (List.range 18 23)
-                , lineHtml model Yellow "col" 1 (List.range 24 29)
-                , lineHtml model Yellow "col" 0 (List.range 30 35)
+                [ lineHtml model Yellow "col" 4 (List.range 66 71) 
+                , lineHtml model Yellow "col" 1 (List.range 60 65)
+                , lineHtml model Yellow "col" 0 (List.reverse (List.range 54 59) )
                 ]
             , div [ class "w-48 h-48" ] []
             , div [ class "flex" ]
-                [ lineHtml model Red "col" 2 (List.range 36 41)
-                , lineHtml model Red "col" 3 (List.range 42 47)
-                , lineHtml model Red "col" 4 (List.range 48 53)
+                [ lineHtml model Red "col" 2 (List.range 18 23) 
+                , lineHtml model Red "col" 3 (List.reverse (List.range 24 29))
+                , lineHtml model Red "col" 4 (List.reverse (List.range 30 35))
                 ]
             ]
         , div
             []
-            [ homeBox (sparePieces model.positions Yellow)
-                Yellow
+            [ homeBox (sparePieces model.positions Yellow) Yellow "rounded-tr-xl"
             , div []
-                [ lineHtml model Green "row" 4 (List.range 54 59)
-                , lineHtml model Green "row" 3 (List.range 60 65)
-                , lineHtml model Green "row" 2 (List.range 66 71)
+                [ lineHtml model Green "row" 4 (List.reverse (List.range 48 53))
+                , lineHtml model Green "row" 3 (List.reverse (List.range 42 47)) 
+                , lineHtml model Green "row" 2 (List.range 36 41 ) 
                 ]
-            , homeBox (sparePieces model.positions Green) Green
+            , homeBox (sparePieces model.positions Green) Green "rounded-br-xl"
             ]
         ]
 
@@ -214,7 +220,7 @@ view model =
         , case model.room of
             Just _ ->
                 div []
-                    [ div [ class "text-center text-white" ]
+                    [ div [ class "text-center text-black" ]
                         [ gridHtml model
                         , Html.text ("Room:  " ++ Maybe.withDefault "" model.room)
                         ]
@@ -222,7 +228,7 @@ view model =
 
             Nothing ->
                 div []
-                    [ div [ class "text-center text-white" ]
+                    [ div [ class "text-center text-black" ]
                         [ gridHtml model
                         , Html.text ("Room:  " ++ Maybe.withDefault "" model.room)
                         ]

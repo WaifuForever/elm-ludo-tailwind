@@ -90,6 +90,7 @@ singleCell playerColour background opacity index =
 
             Just colour ->
                 pieceSvg ( colour, 0.7 ) (Just -11)
+        
         ]
 
 
@@ -146,12 +147,13 @@ sharedCell positions background opacity =
                         _ ->
                             []
                     )
+              
                 ]
 
 
 homeCell : Bool -> PlayerColour -> Html msg
 homeCell p colour =
-    div [ class "flex w-16 h-16 m-2 pl-2 pt-1 rounded-full bg-gray-300" ]
+    div [ class "flex w-16 h-16 m-2 pl-2 pt-1 rounded-full bg-gray-300 border-2 border-zinc-300" ]
         [ if p then
             pieceSvg ( colour, 0.9 ) Nothing
 
