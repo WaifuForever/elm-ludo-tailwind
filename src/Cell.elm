@@ -2,7 +2,7 @@ module Cell exposing (homeCell, playerColourToString, sharedCell, singleCell)
 
 import Html exposing (Html, div)
 import Html.Attributes exposing (class)
-import LudoModel exposing (PlayerColour(..))
+import Model exposing (PlayerColour(..))
 import Svg exposing (svg)
 import Svg.Attributes
 

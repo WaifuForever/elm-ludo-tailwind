@@ -3,18 +3,13 @@ module Main exposing (main)
 import Array exposing (Array)
 import Browser
 import Cell exposing (sharedCell)
+import Dice exposing (dice)
 import HomeBox exposing (homeBox)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import LudoModel exposing (Model, Msg(..), PlayerColour(..), Position(..))
+import Model exposing (Model, Msg(..), PlayerColour(..), Position(..))
 import Random
-
-
-update : Msg -> Model -> ( Model, Cmd Msg )
-update _ model =
-    ( model
-    , Cmd.none
-    )
+import Update exposing (update)
 
 
 subscriptions : Model -> Sub Msg
@@ -30,9 +25,9 @@ main =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { diceNum = 0
+    ( { diceNum = 2
       , turn = Red
-      , positions = [ ]
+      , positions = []
       , maxPlayers = Just 2
       , room = Nothing
       , roomToJoin = ""
@@ -184,13 +179,13 @@ gridHtml model =
         , div
             [ class "col" ]
             [ div [ class "flex" ]
-                [ lineHtml model Yellow "col" 4 (List.range 66 71) 
+                [ lineHtml model Yellow "col" 4 (List.range 66 71)
                 , lineHtml model Yellow "col" 1 (List.range 60 65)
-                , lineHtml model Yellow "col" 0 (List.reverse (List.range 54 59) )
+                , lineHtml model Yellow "col" 0 (List.reverse (List.range 54 59))
                 ]
             , div [ class "w-48 h-48" ] []
             , div [ class "flex" ]
-                [ lineHtml model Red "col" 2 (List.range 18 23) 
+                [ lineHtml model Red "col" 2 (List.range 18 23)
                 , lineHtml model Red "col" 3 (List.reverse (List.range 24 29))
                 , lineHtml model Red "col" 4 (List.reverse (List.range 30 35))
                 ]
@@ -200,8 +195,8 @@ gridHtml model =
             [ homeBox (sparePieces model.positions Yellow) Yellow "rounded-tr-xl"
             , div []
                 [ lineHtml model Green "row" 4 (List.reverse (List.range 48 53))
-                , lineHtml model Green "row" 3 (List.reverse (List.range 42 47)) 
-                , lineHtml model Green "row" 2 (List.range 36 41 ) 
+                , lineHtml model Green "row" 3 (List.reverse (List.range 42 47))
+                , lineHtml model Green "row" 2 (List.range 36 41)
                 ]
             , homeBox (sparePieces model.positions Green) Green "rounded-br-xl"
             ]
@@ -227,10 +222,10 @@ view model =
                     ]
 
             Nothing ->
-                div []
-                    [ div [ class "text-center text-black" ]
+                div [ class "flex" ]
+                    [ div [ class "flex text-center text-black" ]
                         [ gridHtml model
-                        , Html.text ("Room:  " ++ Maybe.withDefault "" model.room)
                         ]
                     ]
+        , div [ class "flex items-center h-screen" ] [ dice model ]
         ]

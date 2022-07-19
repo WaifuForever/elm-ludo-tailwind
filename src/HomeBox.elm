@@ -3,7 +3,7 @@ module HomeBox exposing (homeBox)
 import Cell exposing (homeCell, playerColourToString)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import LudoModel exposing (PlayerColour(..))
+import Model exposing (PlayerColour(..))
 
 
 homeBox : List Bool -> PlayerColour -> String -> Html msg

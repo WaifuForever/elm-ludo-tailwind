@@ -1,4 +1,4 @@
-module LudoModel exposing (Model, Msg(..), PlayerColour(..), Position(..))
+module Model exposing (Model, Msg(..), PlayerColour(..), Position(..))
 
 
 type alias Model =
@@ -27,16 +27,10 @@ type Position
 
 
 type Msg
-    = NewRandomNumber Int
-    | MoveCoin Position
-    | RollDice
-    | MakeMove Position
-    | RoomToBeJoinedChanged String
-    | MaxPlayersChanged String
-    | OnRoomJoinClicked
-    | OnStartGameClicked
-    | UpdateMessage String
-    | UpdateRoom String Int Int
+    = RandomNumber
+    | NewFace Int
+    
+
 
 
 type CommonPathPosition
