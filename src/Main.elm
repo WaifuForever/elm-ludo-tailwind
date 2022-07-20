@@ -26,7 +26,6 @@ init : () -> ( Model, Cmd Msg )
 init _ =
     ( { diceNum = Just 2
       , diceAnimation = False
-      , turn = Red
       , positions = []
       , maxPlayers = Just 2
       , room = Nothing
@@ -224,8 +223,9 @@ view model =
             Nothing ->
                 div [ class "flex" ]
                     [ div [ class "flex text-center text-black" ]
-                        [ gridHtml model
+                        [ div [ class "flex items-center h-screen" ] [ dice model ]
+                        , gridHtml model
+                        , div [ class "flex items-center h-screen" ] [ dice model ]
                         ]
                     ]
-        , div [ class "flex items-center h-screen" ] [ dice model ]
         ]

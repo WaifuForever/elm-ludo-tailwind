@@ -131,7 +131,16 @@ diceFace isMoving number ( x, y ) =
 
 dice : Model -> Html Msg
 dice model =
-    div [ class "w-40 h-40 overflow-hidden", onClick Roll ]
+    div
+        [ class "w-40 h-40 overflow-hidden"
+        , onClick
+            (if model.diceAnimation then
+                DoNothing
+
+             else
+                Roll
+            )
+        ]
         [ diceFace model.diceAnimation
             (case model.diceNum of
                 Just n ->

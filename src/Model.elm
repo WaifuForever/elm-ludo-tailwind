@@ -5,7 +5,6 @@ type alias Model =
     { diceNum : Maybe Int
     , diceAnimation : Bool
     , positions : List ( List PlayerColour, Int )
-    , turn : PlayerColour
     , maxPlayers : Maybe Int
     , room : Maybe String
     , roomToJoin : String
@@ -31,6 +30,8 @@ type Msg
     = Roll
     | NewFace (List Int)
     | RollAnimation Int
+    | SetTurn Int
+    | DoNothing
     
 
 

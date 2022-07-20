@@ -105,6 +105,8 @@ shuffleList seed =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        DoNothing -> (model, Cmd.none)
+
         Roll ->
             ( { model | diceAnimation = True }
             , Random.generate RollAnimation (Random.int 0 29)
@@ -117,6 +119,12 @@ update msg model =
             case list of
                 [] ->
                     ( { model | diceAnimation = False }, Cmd.none )
+
+                [ x ] ->
+                    ( { model | diceNum = Just x }
+                    , Delay.after 0
+                        (NewFace [])
+                    )
 
                 ls ->
                     ( { model | diceNum = List.head ls }
@@ -131,6 +139,33 @@ update msg model =
                             )
                         )
                     )
+
+        SetTurn number ->
+            case number of
+                6 ->
+                    ( model, Cmd.none )
+
+                _ ->
+                    ( { model | participants = nextTurn model.participants }, Cmd.none )
+
+
+nextTurn : List PlayerColour -> List PlayerColour
+nextTurn list =
+    let
+        head =
+            case List.head list of
+                Just item ->
+                    [ item ]
+
+                Nothing ->
+                    []
+    in
+    case List.tail list of
+        Just tail ->
+            List.concat [ tail, head ]
+
+        Nothing ->
+            list
 
 
 getParticipantsByMaxPlayers : Int -> List PlayerColour
