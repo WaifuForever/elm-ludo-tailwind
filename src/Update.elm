@@ -105,7 +105,8 @@ shuffleList seed =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        DoNothing -> (model, Cmd.none)
+        DoNothing ->
+            ( model, Cmd.none )
 
         Roll ->
             ( { model | diceAnimation = True }
@@ -122,13 +123,15 @@ update msg model =
 
                 [ x ] ->
                     ( { model | diceNum = Just x }
-                    , Delay.after 0
-                        (NewFace [])
+                    , Delay.sequence
+                        [ ( 0, NewFace [] )
+                        , ( 0, SetTurn x )
+                        ]
                     )
 
                 ls ->
                     ( { model | diceNum = List.head ls }
-                    , Delay.after 400
+                    , Delay.after 350
                         (NewFace
                             (case List.tail ls of
                                 Just lsTail ->

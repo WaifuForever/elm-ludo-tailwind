@@ -8,8 +8,8 @@ import Svg exposing (svg)
 import Svg.Attributes
 
 
-diceFace : Bool -> Int -> ( Int, Int ) -> Html Msg
-diceFace isMoving number ( x, y ) =
+diceFace : Bool -> String -> Int -> ( Int, Int ) -> Html Msg
+diceFace isMoving playerColour number ( x, y ) =
     let
         viewBoxConstraints =
             "0 0 " ++ String.fromInt y ++ " " ++ String.fromInt x
@@ -19,7 +19,7 @@ diceFace isMoving number ( x, y ) =
                 "currentColor"
 
             else
-                "red"
+                playerColour
     in
     case number of
         1 ->
@@ -142,6 +142,24 @@ dice model =
             )
         ]
         [ diceFace model.diceAnimation
+            (case List.head model.participants of
+                Just x ->
+                    case x of
+                        Red ->
+                            "red"
+
+                        Yellow ->
+                            "yellow"
+
+                        Green ->
+                            "green"
+
+                        Blue ->
+                            "blue"
+
+                Nothing ->
+                    "blue"
+            )
             (case model.diceNum of
                 Just n ->
                     n

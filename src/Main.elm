@@ -22,6 +22,11 @@ main =
     Browser.element { init = init, update = update, view = view, subscriptions = subscriptions }
 
 
+state : List PlayerColour
+state =
+    [ Blue, Yellow, Red, Green ]
+
+
 init : () -> ( Model, Cmd Msg )
 init _ =
     ( { diceNum = Just 2
@@ -31,7 +36,6 @@ init _ =
       , room = Nothing
       , roomToJoin = ""
       , messageToDisplay = ""
-      , selectedPlayer = Red
       , participants = [ Red, Green, Yellow, Blue ]
       }
     , Cmd.none
@@ -164,40 +168,73 @@ sparePieces inGame playerColour =
 
 gridHtml : Model -> Html Msg
 gridHtml model =
+    let
+        first =
+            case getElementFromList 0 state of
+                Just x ->
+                    x
+
+                Nothing ->
+                    Red
+
+        second =
+            case getElementFromList 1 state of
+                Just x ->
+                    x
+
+                Nothing ->
+                    Green
+
+        third =
+            case getElementFromList 2 state of
+                Just x ->
+                    x
+
+                Nothing ->
+                    Yellow
+
+        fourth =
+            case getElementFromList 3 state of
+                Just x ->
+                    x
+
+                Nothing ->
+                    Blue
+    in
     div [ class "flex border-2 border-white bg-white rounded-xl" ]
         [ div
             []
-            [ homeBox (sparePieces model.positions Blue) Blue "rounded-tl-xl"
+            [ homeBox (sparePieces model.positions first) first "rounded-tl-xl"
             , div [ class "col" ]
-                [ lineHtml model Blue "row" 0 (List.reverse (List.range 0 5))
-                , lineHtml model Blue "row" 1 (List.range 6 11)
-                , lineHtml model Blue "row" 4 (List.range 12 17)
+                [ lineHtml model first "row" 0 (List.reverse (List.range 0 5))
+                , lineHtml model first "row" 1 (List.range 6 11)
+                , lineHtml model first "row" 4 (List.range 12 17)
                 ]
-            , homeBox (sparePieces model.positions Red) Red "rounded-bl-xl"
+            , homeBox (sparePieces model.positions second) second "rounded-bl-xl"
             ]
         , div
             [ class "col" ]
             [ div [ class "flex" ]
-                [ lineHtml model Yellow "col" 4 (List.range 66 71)
-                , lineHtml model Yellow "col" 1 (List.range 60 65)
-                , lineHtml model Yellow "col" 0 (List.reverse (List.range 54 59))
+                [ lineHtml model third "col" 4 (List.range 66 71)
+                , lineHtml model third "col" 1 (List.range 60 65)
+                , lineHtml model third "col" 0 (List.reverse (List.range 54 59))
                 ]
             , div [ class "w-48 h-48" ] []
             , div [ class "flex" ]
-                [ lineHtml model Red "col" 2 (List.range 18 23)
-                , lineHtml model Red "col" 3 (List.reverse (List.range 24 29))
-                , lineHtml model Red "col" 4 (List.reverse (List.range 30 35))
+                [ lineHtml model second "col" 2 (List.range 18 23)
+                , lineHtml model second "col" 3 (List.reverse (List.range 24 29))
+                , lineHtml model second "col" 4 (List.reverse (List.range 30 35))
                 ]
             ]
         , div
             []
-            [ homeBox (sparePieces model.positions Yellow) Yellow "rounded-tr-xl"
+            [ homeBox (sparePieces model.positions third) third "rounded-tr-xl"
             , div []
-                [ lineHtml model Green "row" 4 (List.reverse (List.range 48 53))
-                , lineHtml model Green "row" 3 (List.reverse (List.range 42 47))
-                , lineHtml model Green "row" 2 (List.range 36 41)
+                [ lineHtml model fourth "row" 4 (List.reverse (List.range 48 53))
+                , lineHtml model fourth "row" 3 (List.reverse (List.range 42 47))
+                , lineHtml model fourth "row" 2 (List.range 36 41)
                 ]
-            , homeBox (sparePieces model.positions Green) Green "rounded-br-xl"
+            , homeBox (sparePieces model.positions fourth) fourth "rounded-br-xl"
             ]
         ]
 
@@ -209,8 +246,24 @@ gameStartView model =
 
 view : Model -> Html Msg
 view model =
+    let
+        head =
+            case List.head model.participants of
+                Just x ->
+                    x
+
+                Nothing ->
+                    Red
+    in
     div [ class "flex h-screen justify-center items-center py-2" ]
         [ div [] [ Html.text model.messageToDisplay ]
+        , div [ class "flex items-center h-screen min-w-[100px]" ]
+            (if List.member head (List.take 2 state) then
+                [ dice model ]
+
+             else
+                []
+            )
         , case model.room of
             Just _ ->
                 div []
@@ -223,9 +276,13 @@ view model =
             Nothing ->
                 div [ class "flex" ]
                     [ div [ class "flex text-center text-black" ]
-                        [ div [ class "flex items-center h-screen" ] [ dice model ]
-                        , gridHtml model
-                        , div [ class "flex items-center h-screen" ] [ dice model ]
-                        ]
+                        [ gridHtml model ]
                     ]
+        , div [ class "flex items-center h-screen min-w-[100px]" ]
+            (if List.member head (List.take 2 state) then
+                []
+
+             else
+                [ dice model ]
+            )
         ]

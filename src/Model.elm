@@ -9,7 +9,6 @@ type alias Model =
     , room : Maybe String
     , roomToJoin : String
     , messageToDisplay : String
-    , selectedPlayer : PlayerColour
     , participants : List PlayerColour
     }
 
