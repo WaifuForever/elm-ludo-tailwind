@@ -8,7 +8,6 @@ import HomeBox exposing (homeBox)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Model exposing (Model, Msg(..), PlayerColour(..), Position(..))
-import Random
 import Update exposing (update)
 
 
@@ -25,7 +24,8 @@ main =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { diceNum = 2
+    ( { diceNum = Just 2
+      , diceAnimation = False
       , turn = Red
       , positions = []
       , maxPlayers = Just 2

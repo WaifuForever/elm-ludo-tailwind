@@ -1,20 +1,25 @@
 module Dice exposing (dice)
 
-import Html exposing (Html, button, img, text)
+import Html exposing (Html, button, div, img, text)
 import Html.Attributes exposing (class, hidden)
 import Html.Events exposing (onClick)
-import Model exposing (Msg(..), PlayerColour(..))
+import Model exposing (Model, Msg(..), PlayerColour(..))
 import Svg exposing (svg)
 import Svg.Attributes
-import Html exposing (div)
-import Model exposing (Model)
 
 
-diceFace : Int -> ( Int, Int ) -> Html Msg
-diceFace number ( x, y ) =
+diceFace : Bool -> Int -> ( Int, Int ) -> Html Msg
+diceFace isMoving number ( x, y ) =
     let
         viewBoxConstraints =
             "0 0 " ++ String.fromInt y ++ " " ++ String.fromInt x
+
+        colour =
+            if isMoving then
+                "currentColor"
+
+            else
+                "red"
     in
     case number of
         1 ->
@@ -22,13 +27,13 @@ diceFace number ( x, y ) =
                 [ Svg.Attributes.viewBox viewBoxConstraints
                 , Svg.Attributes.height "100%"
                 , Svg.Attributes.width "100%"
-                , Svg.Attributes.fill "currentColor"
+                , Svg.Attributes.fill colour
                 ]
                 [ Svg.circle
                     [ Svg.Attributes.cx "8"
                     , Svg.Attributes.cy "8"
                     , Svg.Attributes.r (String.fromInt (y // 10))
-                    , Svg.Attributes.stroke "black"
+                    , Svg.Attributes.stroke colour
                     , Svg.Attributes.strokeWidth "1"
                     ]
                     []
@@ -43,7 +48,7 @@ diceFace number ( x, y ) =
                 [ Svg.Attributes.viewBox viewBoxConstraints
                 , Svg.Attributes.height "100%"
                 , Svg.Attributes.width "100%"
-                , Svg.Attributes.fill "currentColor"
+                , Svg.Attributes.fill colour
                 ]
                 [ Svg.path
                     [ Svg.Attributes.d "M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"
@@ -60,7 +65,7 @@ diceFace number ( x, y ) =
                 [ Svg.Attributes.viewBox viewBoxConstraints
                 , Svg.Attributes.height "100%"
                 , Svg.Attributes.width "100%"
-                , Svg.Attributes.fill "currentColor"
+                , Svg.Attributes.fill colour
                 ]
                 [ Svg.path
                     [ Svg.Attributes.d "M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"
@@ -77,7 +82,7 @@ diceFace number ( x, y ) =
                 [ Svg.Attributes.viewBox viewBoxConstraints
                 , Svg.Attributes.height "100%"
                 , Svg.Attributes.width "100%"
-                , Svg.Attributes.fill "currentColor"
+                , Svg.Attributes.fill colour
                 ]
                 [ Svg.path
                     [ Svg.Attributes.d "M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"
@@ -94,7 +99,7 @@ diceFace number ( x, y ) =
                 [ Svg.Attributes.viewBox viewBoxConstraints
                 , Svg.Attributes.height "100%"
                 , Svg.Attributes.width "100%"
-                , Svg.Attributes.fill "currentColor"
+                , Svg.Attributes.fill colour
                 ]
                 [ Svg.path
                     [ Svg.Attributes.d "M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"
@@ -111,7 +116,7 @@ diceFace number ( x, y ) =
                 [ Svg.Attributes.viewBox viewBoxConstraints
                 , Svg.Attributes.height "100%"
                 , Svg.Attributes.width "100%"
-                , Svg.Attributes.fill "currentColor"
+                , Svg.Attributes.fill colour
                 ]
                 [ Svg.path
                     [ Svg.Attributes.d "M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"
@@ -126,5 +131,14 @@ diceFace number ( x, y ) =
 
 dice : Model -> Html Msg
 dice model =
-    div [class "w-40 h-40 overflow-hidden", onClick RandomNumber ] [ diceFace model.diceNum ( 16, 16 )]
-   
+    div [ class "w-40 h-40 overflow-hidden", onClick Roll ]
+        [ diceFace model.diceAnimation
+            (case model.diceNum of
+                Just n ->
+                    n
+
+                Nothing ->
+                    2
+            )
+            ( 16, 16 )
+        ]

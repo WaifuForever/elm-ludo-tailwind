@@ -2,7 +2,8 @@ module Model exposing (Model, Msg(..), PlayerColour(..), Position(..))
 
 
 type alias Model =
-    { diceNum : Int
+    { diceNum : Maybe Int
+    , diceAnimation : Bool
     , positions : List ( List PlayerColour, Int )
     , turn : PlayerColour
     , maxPlayers : Maybe Int
@@ -27,8 +28,9 @@ type Position
 
 
 type Msg
-    = RandomNumber
-    | NewFace Int
+    = Roll
+    | NewFace (List Int)
+    | RollAnimation Int
     
 
 
